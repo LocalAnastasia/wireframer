@@ -1,0 +1,327 @@
+{
+	"users": [	
+		{	
+			"firstName": "Super",
+			"lastName": "User",
+			"initials": "SU",
+			"diagrams": [
+				{	
+					"name": "Login Page Draft",
+					"height": 2000,
+					"width": 2000,
+					"lastModified": 0,
+					"controls": [
+						{
+							"key": 0,
+							"type": "container",
+							"value": null,
+							"center-x": 1000,
+							"center-y": 1000,
+							"height": 1000,
+							"width" : 1000,
+							"font-size": null,
+							"background-color": "#ffffff",
+							"border-color": "#ffffff",
+							"border-thickness": null,
+							"border-radius": null
+
+						},
+						{
+							"key": 1,
+							"type": "label",
+							"value": "Login",
+							"center-x": 200,
+							"center-y": 100,
+							"height": null,
+							"width" : null,
+							"font-size": 18,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 2,
+							"type": "textfield",
+							"value": "",
+							"center-x": 200,
+							"center-y": 200,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#ffffff",
+							"border-color": "#ffffff",
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 3,
+							"type": "textfield",
+							"value": "",
+							"center-x": 200,
+							"center-y": 300,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#ffffff",
+							"border-color": "#ffffff",
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 4,
+							"type": "button",
+							"value": "Submit",
+							"center-x": 200,
+							"center-y": 400,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#f90000",
+							"border-color": "#ffffff",
+							"border-thickness": 2,
+							"border-radius": 5
+
+						}
+					]
+				},
+				{
+					"name": "Register Page Draft",
+					"height": 3000,
+					"width": 3000,
+					"lastModified": 1,
+					"controls": [
+						{
+							"key": 0,
+							"type": "container",
+							"value": null,
+							"center-x": 1500,
+							"center-y": 1500,
+							"height": 1500,
+							"width" : 1500,
+							"font-size": null,
+							"background-color": "#ffffff",
+							"border-color": "#000000",
+							"border-thickness": null,
+							"border-radius": null
+
+						},
+						{
+							"key": 1,
+							"type": "label",
+							"value": "Email: ",
+							"center-x": 200,
+							"center-y": 200,
+							"height": null,
+							"width" : null,
+							"font-size": 12,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},					
+						{
+							"key": 2,
+							"type": "textfield",
+							"value": "",
+							"center-x": 400,
+							"center-y": 200,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#ffffff",
+							"border-color": "#000000",
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 3,
+							"type": "label",
+							"value": "Password: ",
+							"center-x": 200,
+							"center-y": 600,
+							"height": null,
+							"width" : null,
+							"font-size": 12,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},					
+						{
+							"key": 4,
+							"type": "textfield",
+							"value": "",
+							"center-x": 400,
+							"center-y": 600,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#ffffff",
+							"border-color": "#000000",
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 5,
+							"type": "label",
+							"value": "First Name: ",
+							"center-x": 200,
+							"center-y": 800,
+							"height": null,
+							"width" : null,
+							"font-size": 12,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},					
+						{
+							"key": 6,
+							"type": "textfield",
+							"value": "",
+							"center-x": 400,
+							"center-y": 800,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#ffffff",
+							"border-color": "#000000",
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 7,
+							"type": "label",
+							"value": "Last Name: ",
+							"center-x": 200,
+							"center-y": 1000,
+							"height": null,
+							"width" : null,
+							"font-size": 12,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},					
+						{
+							"key": 8,
+							"type": "textfield",
+							"value": "",
+							"center-x": 400,
+							"center-y": 1000,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#ffffff",
+							"border-color": "#000000",
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 9,
+							"type": "button",
+							"value": "Submit",
+							"center-x": 600,
+							"center-y": 1200,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#f90000",
+							"border-color": "#ffffff",
+							"border-thickness": 2,
+							"border-radius": 5
+
+						},
+						{
+							"key": 10,
+							"type": "button",
+							"value": "Cancel",
+							"center-x": 700,
+							"center-y": 1200,
+							"height": 20,
+							"width" : 80,
+							"font-size": 12,
+							"background-color": "#f90000",
+							"border-color": "#ffffff",
+							"border-thickness": 2,
+							"border-radius": 5
+
+						}
+					]
+				}
+			]
+		},
+		{	
+			"firstName": "Local",
+			"lastName": "Anastasia",
+			"initials": "LA",
+			"diagrams": [
+				{	
+					"name": "Welcome Page",
+					"height": 2000,
+					"width": 2000,
+					"lastModified": 0,
+					"controls": [
+						{
+							"key": 0,
+							"type": "container",
+							"value": null,
+							"center-x": 1000,
+							"center-y": 1000,
+							"height": 1000,
+							"width" : 1000,
+							"font-size": null,
+							"background-color": "#ffffff",
+							"border-color": "#ffffff",
+							"border-thickness": null,
+							"border-radius": null
+
+						},
+						{
+							"key": 1,
+							"type": "label",
+							"value": "Welcome!",
+							"center-x": 200,
+							"center-y": 100,
+							"height": 15,
+							"width" : 60,
+							"font-size": 18,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						},
+						{
+							"key": 2,
+							"type": "label",
+							"value": "We hope you like our website? If you don't we don't care either.",
+							"center-x": 200,
+							"center-y": 300,
+							"height": null,
+							"width" : null,
+							"font-size": 12,
+							"background-color": null,
+							"border-color": null,
+							"border-thickness": 2,
+							"border-radius": 7
+
+						}
+					]
+				}
+			]
+		}
+	]
+}

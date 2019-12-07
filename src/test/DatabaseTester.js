@@ -1,44 +1,45 @@
 import React from 'react'
+import {Redirect} from 'react-router-dom'
 import { connect } from 'react-redux';
-import todoJson from './TestTodoListData.json'
+import diagramsJson from './TestDiagrams.json'
 import { getFirestore } from 'redux-firestore';
 
 class DatabaseTester extends React.Component {
-
-    // NOTE, BY KEEPING THE DATABASE PUBLIC YOU CAN
-    // DO THIS ANY TIME YOU LIKE WITHOUT HAVING
-    // TO LOG IN
+    //Super user account must always exist 
     handleClear = () => {
         const fireStore = getFirestore();
-        fireStore.collection('todoLists').get().then(function(querySnapshot){
-            querySnapshot.forEach(function(doc) {
-                console.log("deleting " + doc.id);
-                fireStore.collection('todoLists').doc(doc.id).delete();
-            })
+        fireStore.collection('users').doc('JpYe7Jo7sVcd7heoHd6sFqoZkio1').update({
+            diagrams: [] //Clear diagrams in super user account
         });
     }
 
-    handleReset = () => {
+    handleReset = () => { //Reset super user account
         const fireStore = getFirestore();
-        todoJson.todoLists.forEach(todoListJson => {
-            fireStore.collection('todoLists').add({
-                    name: todoListJson.name,
-                    owner: todoListJson.owner,
-                    items: todoListJson.items
-                }).then(() => {
-                    console.log("DATABASE RESET");
-                }).catch((err) => {
-                    console.log(err);
-                });
+        const superuser = diagramsJson.users[0];
+        fireStore.collection('users').doc('JpYe7Jo7sVcd7heoHd6sFqoZkio1').update({
+            firstName: superuser.firstName,
+            lastName: superuser.lastName,
+            initials: superuser.initials,
+            diagrams: superuser.diagrams
+        }).then(() => {
+            console.log("DATABASE RESET");
+        }).catch((err) => {
+            console.log(err);
         });
     }
 
     render() {
+        const auth = this.props.auth;
+        if (auth.uid === 'JpYe7Jo7sVcd7heoHd6sFqoZkio1'){ //Only the super user can access this page
+            return (
+                <div>
+                    <button onClick={this.handleClear}>Clear Database</button>
+                    <button onClick={this.handleReset}>Reset Database</button>
+                </div>)
+        }
         return (
-            <div>
-                <button onClick={this.handleClear}>Clear Database</button>
-                <button onClick={this.handleReset}>Reset Database</button>
-            </div>)
+            <Redirect path="/"/>
+        )
     }
 }
 

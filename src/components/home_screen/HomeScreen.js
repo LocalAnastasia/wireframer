@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
 import { firestoreConnect } from 'react-redux-firebase';
-import TodoListLinks from './TodoListLinks'
+import DiagramLinks from './DiagramLinks'
 import { getFirestore } from 'redux-firestore';
 
 class HomeScreen extends Component {
@@ -37,7 +37,7 @@ class HomeScreen extends Component {
             <div className="dashboard container">
                 <div className="row">
                     <div className="col s12 m4">
-                        <TodoListLinks />
+                        <DiagramLinks />
                     </div>
 
                     <div className="col s8">
@@ -67,6 +67,6 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-      { collection: 'todoLists' },
+      { collection: 'users' },
     ]),
 )(HomeScreen);
