@@ -20,6 +20,12 @@ class EditScreen extends Component {
         this.setState({controlInFocus: this.state.controls[key]});
     }
 
+    handleDefocus = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        this.setState({controlInFocus: null});
+    }
+
     handleChangeControl = (key, property, value, e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -27,7 +33,9 @@ class EditScreen extends Component {
         var control = JSON.parse(JSON.stringify(this.state.controls[key]));
         control[property] = value;
         controls[key] = control;
-        this.setState({controls: controls});
+        this.setState({
+            controls: controls,
+            controlInFocus: controls[key]});
     }
 
     render() {
@@ -40,33 +48,41 @@ class EditScreen extends Component {
             <div className="dashboard container edit_container">
                 <div className="edit_container_left">
                     <div className="edit_toolbar">
-                        <div className="material-icons">zoom_in</div>
-                        <div className="material-icons">zoom_out</div>
-                        <div>Save</div>
-                        <div>Close</div>
+                        <div className="material-icons toolbar_button">zoom_in</div>
+                        <div className="material-icons toolbar_button">zoom_out</div>
+                        <div className="toolbar_button">Save</div>
+                        <div className="toolbar_button">Close</div>
                     </div>
                     <div className="edit_selection_bar">
-                        <div>
-                            <div className="material-icons large">crop_landscape</div>
-                            <div>Container</div>
+                        <div className="waves-effect waves-light btn selection_bar_button">
+                            <div>
+                                <i className="material-icons large">crop_landscape</i>
+                                <p>Container</p>
+                            </div>
                         </div>
-                        <div>
-                            <div className="material-icons large">crop_landscape</div>
-                            <div>Label</div>
+                        <div className="waves-effect waves-light btn selection_bar_button">
+                            <div>
+                                <i className="material-icons large">crop_landscape</i>
+                                <p>Label</p>
+                            </div>
                         </div>
-                        <div>
-                            <div className="material-icons large">crop_landscape</div>
-                            <div>Button</div>
+                        <div className="waves-effect waves-light btn selection_bar_button">
+                            <div>
+                                <i className="material-icons large">crop_landscape</i>
+                                <p>Button</p>
+                            </div>
                         </div>
-                        <div>
-                            <div className="material-icons large">crop_landscape</div>
-                            <div>Textfield</div>
-                        </div>
+                        <a className="waves-effect waves-light btn selection_bar_button">
+                            <div>
+                                <i className="material-icons large">text_fields</i>
+                                <p>Textfield</p>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 <div className="edit_container_center">
                     {controls && controls.map((control) => 
-                        <EditScreenControl control={control} handleChangeControl={this.handleChangeControl} onClick={this.handleShiftFocus.bind(this, control.key)}/>
+                        <EditScreenControl control={control} handleChangeControl={this.handleChangeControl} handleShiftFocus={this.handleShiftFocus}/>
                     )}
                 </div>
                 <div className="edit_container_right">

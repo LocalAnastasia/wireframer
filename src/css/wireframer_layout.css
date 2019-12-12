@@ -144,20 +144,62 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 
 .edit_toolbar {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: 25% 25% 25% 25%;
   background-color: white;
+}
+
+.toolbar_button {
+  cursor: pointer;
+  height: 100%;
+  padding-top: 15px;
+  text-align:center;
+}
+
+.toolbar_button:hover {
+  color: white;
+  background-color: grey;
 }
 
 .edit_selection_bar {
   display: grid;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: 25% 25% 25% 25%;
   text-align: center;
   background-color: white;
+}
+
+.selection_bar_button {
+  height: 100%;
+  width: 100%;
+  color: black;
+  background-color: inherit;
+}
+
+.selection_bar_button:hover {
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+
+.selection_bar_button .material-icons {
+  display: inline-flex;
+  vertical-align: top;
+}
+
+.selection_bar_button > div {
+    margin-top: 18px;
 }
 
 .edit_properties_bar {
   background-color: white;
   height: 100%;
+}
+
+.properties_control {
+  position:relative;
+}
+
+.color_picker_container > div{
+  display:inline;
 }
 
 .edit_container_center {
@@ -166,6 +208,7 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 
 .diagram_control {
   position: absolute;
+  cursor: pointer;
 }
 
 .edit_container_right {
