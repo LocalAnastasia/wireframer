@@ -1,10 +1,9 @@
-import React, { useImperativeHandle } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import DiagramCard from './DiagramCard';
 import { getFirestore } from 'redux-firestore';
-import { firestoreConnect } from 'react-redux-firebase';
 
 class DiagramLinks extends React.Component {
     compareByLastModified = (a, b) => {
@@ -14,7 +13,6 @@ class DiagramLinks extends React.Component {
     handleUpdateLastModified = (diagramId, e) => {
         const fireStore = getFirestore();
         const diagrams = JSON.parse(JSON.stringify(this.props.diagrams));
-        console.log(diagrams);
         diagrams[diagramId].lastModified = fireStore.Timestamp.now().seconds;
         fireStore.collection('users').doc(this.props.auth.uid).update({
             diagrams: diagrams
@@ -23,7 +21,6 @@ class DiagramLinks extends React.Component {
 
     render() {
         const diagrams = this.props.diagrams;
-        console.log(diagrams);
         return (
             <div className="todo-lists section">
                 {diagrams && diagrams.sort(this.compareByLastModified).map((diagram, id) => (
@@ -38,7 +35,7 @@ class DiagramLinks extends React.Component {
 
 const mapStateToProps = (state) => {
     const auth = state.firebase.auth;
-    var diagrams = []
+    var diagrams = [];
     if (state.firestore.ordered.users){
         var user = state.firestore.ordered.users.find(user => {
             return user.id === auth.uid;

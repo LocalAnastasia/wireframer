@@ -9,29 +9,34 @@ import { getFirestore } from 'redux-firestore';
 class HomeScreen extends Component {
 
     state = {
-        createNewList: false,
-        newListID: null
+        createNewDiagram: false,
+        newDiagramID: null
     }
 
-    handleNewList = () => {
+    handleNewDiagram = () => {
         const fireStore = getFirestore();
-        fireStore.collection('todoLists').add({
+        const diagram = {
             name: '',
-            owner: '',
-            items: [],
+            height: 2000,
+            width: 2000,
             lastModified: fireStore.Timestamp.now().seconds
+        }
+        const diagrams = JSON.parse(JSON.stringify(this.props.diagrams));
+        diagrams.push(diagram);
+        fireStore.collection('users').doc(this.props.auth.uid).update({
+            diagrams: diagrams
         }).then(ref => this.setState({
             createNewList: true,
-            newListID: ref.id
+            newDiagramID: diagrams.length - 1
         }));
     }
     render() {
-        const newListID = this.state.newListID
+        const newDiagramID = this.state.newDiagramID;
         if (!this.props.auth.uid) {
             return <Redirect to="/login" />;
         }
-        if(this.state.createNewList) {
-            return <Redirect to={'/todoList/' + newListID}/>;
+        if(this.state.createNewDiagram) {
+            return <Redirect to={'/edit/' + newDiagramID}/>;
         }
         return (
             <div className="dashboard container">
@@ -42,13 +47,12 @@ class HomeScreen extends Component {
 
                     <div className="col s8">
                         <div className="banner">
-                            @todo<br />
-                            List Maker
+                            Wireframe Diagram Maker
                         </div>
                         
                         <div className="home_new_list_container">
-                                <button className="home_new_list_button" onClick={this.handleNewList}>
-                                    Create a New To Do List
+                                <button className="home_new_list_button" onClick={this.handleNewDiagram}>
+                                    Create a New Diagram
                                 </button>
                         </div>
                     </div>

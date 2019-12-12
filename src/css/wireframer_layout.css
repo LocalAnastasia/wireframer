@@ -128,3 +128,46 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 .item_buttons {
   float: right;
 }
+
+.edit_container {
+  display: grid;
+  height: 550px;
+  width: 1000px;
+  grid-template-columns: 20% 60% 20%;
+  background-color: #585858;
+}
+
+.edit_container_left {
+  display: grid;
+  grid-template-rows: 10% 90%;
+}
+
+.edit_toolbar {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  background-color: white;
+}
+
+.edit_selection_bar {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  text-align: center;
+  background-color: white;
+}
+
+.edit_properties_bar {
+  background-color: white;
+  height: 100%;
+}
+
+.edit_container_center {
+  position: relative;
+}
+
+.diagram_control {
+  position: absolute;
+}
+
+.edit_container_right {
+
+}
