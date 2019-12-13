@@ -17,13 +17,13 @@
 							"value": null,
 							"left": 0,
 							"top": 0,
-							"height": 500,
-							"width" : 500,
-							"font-size": null,
+							"height": 400,
+							"width" : 400,
+							"font-size": "12",
 							"background-color": "#ffffff",
 							"border-color": "#ffffff",
-							"border-width": null,
-							"border-radius": null
+							"border-width": 0,
+							"border-radius": 0
 
 						},
 						{
@@ -32,11 +32,11 @@
 							"value": "Login",
 							"left": 100,
 							"top": 50,
-							"height": null,
-							"width" : null,
+							"height": 50,
+							"width" : 100,
 							"font-size": 18,
 							"background-color": null,
-							"border-color": null,
+							"border-color": "#ffffff",
 							"border-width": 2,
 							"border-radius": 7
 

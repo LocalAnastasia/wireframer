@@ -10,15 +10,27 @@ class EditScreenProperties extends Component {
 
     getStyle = (control) => {
         const style = {
-            height: 'auto',
-            width: 'auto',
             fontSize: control["font-size"] ? control["font-size"] : 'auto',
-            backgroundColor: control["background-color"] ? control["background-color"] : 'auto',
-            borderColor: control["border-color"] ? control["border-color"] : 'auto',
-            borderWidth: control["border-width"] ? control["border-width"] : 'auto',
+            backgroundColor: control["background-color"] ? control["background-color"] : 'none',
+            borderColor: control["border-color"] ? control["border-color"] : 'none',
+            borderWidth: control["border-width"] ? control["border-width"] : 'none',
             borderRadius: control["border-radius"] ? control["border-radius"] : 'auto'
         }
         return style;
+    }
+
+    handleChangeBorderThickness = e => {
+        e.stopPropagation();
+        e.preventDefault(); 
+        const control = this.props.control;
+        this.props.handleChangeControl(control.key, 'border-width', parseInt(e.target.value), e);     
+    }
+
+    handleChangeBorderRadius = e => {
+        e.stopPropagation();
+        e.preventDefault(); 
+        const control = this.props.control;
+        this.props.handleChangeControl(control.key, 'border-radius', parseInt(e.target.value), e);     
     }
 
     handleChangeFontSize = e => {
@@ -103,27 +115,9 @@ class EditScreenProperties extends Component {
 
     getControl = (control) => {
         const style = this.getStyle(control);
-        console.log(style);
-        switch(control.type) {
-            case "container":
-                return (
-                    <div className="properties_control" style={style}>Container</div>
-                );
-            case "label":
-                return (
-                    <div className="properties_control" style={style}>{control["value"]}</div>
-                );
-            case "button":
-                return (
-                    <button className="properties_control" style={style}>{control["value"]}</button>
-                );
-            case "textfield":
-                return (
-                    <input type="text" className="properties_control" value={control["value"]} readOnly={true} style={style}></input>
-                );
-            default:
-                return null;   
-        }
+        return (
+            <div className="properties_control" style={style}>{control["value"] ? control["value"] : control["type"]}</div>
+        ); 
     }
 
     getFontSize = (control) => {
@@ -133,8 +127,11 @@ class EditScreenProperties extends Component {
             case "textfield":
                 return(
                     <div className="property_container">
-                        <div>Font size: </div>
-                        <input type="number" value={control["font-size"]} onChange={this.handleChangeFontSize}></input>
+                        Font Size: 
+                        <div className="input-field inline">
+                            <i className="material-icons small prefix">text_fields</i>
+                            <input id="icon_prefix" type="number" value={control["font-size"]} onChange={this.handleChangeFontSize}></input>
+                        </div>
                     </div>
                 )
             default:
@@ -147,22 +144,30 @@ class EditScreenProperties extends Component {
         if (control){
             return (
                 <div>
-                    <span>Properties</span>
-                    <div className="property_container">{this.getControl(control)}</div>
+                    <h5>Properties</h5>
+                    <div className="property_container properties_control_container">{this.getControl(control)}</div>
                     {this.getFontSize(control)}
                     <div className="property_container">
                         <div>Background: </div>
                         <div>
-                            <div className="background_color_picker" onClick={this.toggleBackgroundColorPicker} style={this.getCurrentBackgroundColorStyle(control)}>{this.getCurrentBackgroundColorStyle(control)["backgroundColor"]}</div>
+                            <div className="color_picker" onClick={this.toggleBackgroundColorPicker} style={this.getCurrentBackgroundColorStyle(control)}>{this.getCurrentBackgroundColorStyle(control)["backgroundColor"]}</div>
                             {this.getBackgroundColorPicker(control)}
                         </div>
                     </div>
                     <div className="property_container">
                         <div>Border Color: </div>
                         <div>
-                            <div className="border_color_picker" onClick={this.toggleBorderColorPicker} style={this.getCurrentBorderColorStyle(control)}>{this.getCurrentBorderColorStyle(control)["backgroundColor"]}</div>
+                            <div className="color_picker" onClick={this.toggleBorderColorPicker} style={this.getCurrentBorderColorStyle(control)}>{this.getCurrentBorderColorStyle(control)["backgroundColor"]}</div>
                             {this.getBorderColorPicker(control)}
                         </div>
+                    </div>
+                    <div className="property_container">
+                        <div>Border Thickness: </div>
+                        <input type="range" value={control["border-width"]} onChange={this.handleChangeBorderThickness} min="0" max="100" />
+                    </div>
+                    <div className="property_container">
+                        <div>Border Radius: </div>
+                        <input type="range" value={control["border-radius"]} onChange={this.handleChangeBorderRadius} min="0" max="10" />
                     </div>
                 </div>
             );

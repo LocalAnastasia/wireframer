@@ -1,27 +1,50 @@
 import React, { Component } from 'react';
-import Draggable from 'react-draggable';
+import { Rnd } from "react-rnd";
 
 class EditScreenControl extends Component {
 
     state = {
         key: this.props.control.key,
-        position : {
-            x: this.props.control["left"],
-            y: this.props.control["top"]
-        }
     }
 
     getStyle = (control) => {
         const style = {
-            height: control["height"] ? control["height"] : 'auto',
-            width: control["width"] ? control["width"] : 'auto',
             fontSize: control["font-size"] ? control["font-size"] : 'auto',
-            backgroundColor: control["background-color"] ? control["background-color"] : 'auto',
-            borderColor: control["border-color"] ? control["border-color"] : 'auto',
-            borderWidth: control["border-width"] ? control["border-width"] : 'auto',
-            borderRadius: control["border-radius"] ? control["border-radius"] : 'auto'
+            backgroundColor: control["background-color"] ? control["background-color"] : 'transparent',
+            borderColor: control["border-color"] ? control["border-color"] : 'transparent',
+            borderWidth: control["border-width"] ? control["border-width"] : 0,
+            borderRadius: control["border-radius"] ? control["border-radius"] : 0
         }
         return style;
+    }
+
+    getResizeableAxes = () => {
+        var enable = {}
+        if (!this.props.focus) {
+            enable = {
+                top: false, 
+                right: false, 
+                bottom: false, 
+                left: false, 
+                topRight: false, 
+                bottomRight: false, 
+                bottomLeft: false, 
+                topLeft: false
+            }
+        } 
+        else {
+            enable = {
+                top: true, 
+                right: true, 
+                bottom: true, 
+                left: true, 
+                topRight: true, 
+                bottomRight: true, 
+                bottomLeft: true, 
+                topLeft: true
+            }
+        }
+        return enable;
     }
 
     getXY = (control) => {
@@ -29,47 +52,47 @@ class EditScreenControl extends Component {
             x: control["left"],
             y: control["top"]
         }
+        return XY;
     }
 
-    updateXY =  (e, position) => {
+    getWH = (control) => {
+        const WH = {
+            width: control["width"] ? control["width"] : 'auto',
+            height: control["height"] ? control["height"] : 'auto'
+        }
+        return WH;
+    }
+
+    handleReposition =  (e, direction) => {
         e.preventDefault();
         e.stopPropagation();
-        const {x, y} = position;
-        this.setState({position: {x, y}});
+        const {x, y} = direction;
+        this.props.handleShiftFocus(this.state.key, e);
+        this.props.handleChangeControl(this.state.key, "left", x, e);
+        this.props.handleChangeControl(this.state.key, "top", y, e);
       };
+
+    handleResize = (e, direction, ref, delta, position) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const {x, y} = position;
+        this.props.handleShiftFocus(this.state.key, e);
+        this.props.handleChangeControl(this.state.key, "width", ref.style.width, e);
+        this.props.handleChangeControl(this.state.key, "height", ref.style.height, e);
+        this.props.handleChangeControl(this.state.key, "left", x, e);
+        this.props.handleChangeControl(this.state.key, "top", y, e);
+    }
 
     render() {
         const control = this.props.control;
-        const defaultXY = this.getXY(control);
+        const size = this.getWH(control);
+        const position = this.getXY(control);
         const style = this.getStyle(control);
-        switch(control.type){
-            case "container":
-                return (
-                    <Draggable position={this.state.position} onDrag={this.updateXY} onMouseDown={this.props.handleShiftFocus.bind(this, control.key)} bounds="parent">
-                        <div className="diagram_control" style={style}></div>
-                    </Draggable>
-                );
-            case "label":
-                return (
-                    <Draggable position={this.state.position} onDrag={this.updateXY} onMouseDown={this.props.handleShiftFocus.bind(this, control.key)} bounds="parent">
-                        <div className="diagram_control" style={style}>{control["value"]}</div>
-                    </Draggable>
-                );
-            case "button":
-                return (
-                    <Draggable position={this.state.position} onDrag={this.updateXY} onMouseDown={this.props.handleShiftFocus.bind(this, control.key)} bounds="parent">
-                        <button className="diagram_control" style={style}>{control["value"]}</button>
-                    </Draggable>
-                );
-            case "textfield":
-                return (
-                    <Draggable position={this.state.position} onDrag={this.updateXY} onMouseDown={this.props.handleShiftFocus.bind(this, control.key)} bounds="parent">
-                        <input type="text" className="diagram_control" value={control["value"]} readOnly={true} style={style}></input>
-                    </Draggable>
-                );
-            default:
-                return null;
-        }
+        return (
+            <Rnd className="diagram_control" size={size} style={style} position={position} enableResizing={this.getResizeableAxes()} bounds="parent" onResizeStop={this.handleResize} onDragStop={this.handleReposition}>
+                {control["value"]}
+            </Rnd>
+        )
     }
 }
 

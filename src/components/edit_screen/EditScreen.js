@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Resizable } from 'react-resizable';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Redirect } from 'react-router-dom';
@@ -82,8 +83,7 @@ class EditScreen extends Component {
                 </div>
                 <div className="edit_container_center">
                     {controls && controls.map((control) => 
-                        <EditScreenControl control={control} handleChangeControl={this.handleChangeControl} handleShiftFocus={this.handleShiftFocus}/>
-                    )}
+                        <EditScreenControl focus={this.state.controlInFocus && control.key === this.state.controlInFocus.key ? true : false} control={control} handleChangeControl={this.handleChangeControl} handleShiftFocus={this.handleShiftFocus}/>)}
                 </div>
                 <div className="edit_container_right">
                     <div className="edit_properties_bar">

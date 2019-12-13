@@ -190,16 +190,36 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 }
 
 .edit_properties_bar {
-  background-color: white;
+  display: block;
+  margin: 10px;
   height: 100%;
 }
 
 .properties_control {
-  position:relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.color_picker_container > div{
-  display:inline;
+.properties_control_container {
+  width: 150px;
+  height: 100px;
+  background-color: burlywood;
+  position: relative;
+}
+
+.property_container {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.property_container > * {
+  display: inline;
+}
+
+.color_picker {
+  cursor: pointer;
+  border: solid 1px;
 }
 
 .edit_container_center {
@@ -209,8 +229,15 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 .diagram_control {
   position: absolute;
   cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.react-draggable > span > div {
+  background-color: grey;
+
 }
 
 .edit_container_right {
-
+  background-color: white;
 }
