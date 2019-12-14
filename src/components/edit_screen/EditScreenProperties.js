@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SketchPicker } from 'react-color';
+import ContentEditable from "react-contenteditable";
 
 class EditScreenProperties extends Component {
 
@@ -10,13 +11,18 @@ class EditScreenProperties extends Component {
 
     getStyle = (control) => {
         const style = {
-            fontSize: control["font-size"] ? control["font-size"] : 'auto',
-            backgroundColor: control["background-color"] ? control["background-color"] : 'none',
-            borderColor: control["border-color"] ? control["border-color"] : 'none',
-            borderWidth: control["border-width"] ? control["border-width"] : 'none',
-            borderRadius: control["border-radius"] ? control["border-radius"] : 'auto'
+            fontSize: 12,
+            backgroundColor: control["background-color"] ? control["background-color"] : 'inherit',
+            borderColor: control["border-color"] ? control["border-color"] : 'inherit',
+            borderWidth: control["border-width"] ? 2 : 0,
+            borderRadius: control["border-radius"] ? control["border-radius"] : 0
         }
         return style;
+    }
+
+    handleEditControlText = (e) => {
+        const control = this.props.control;
+        this.props.handleChangeControl(control.key, "value", e.target.value, e);
     }
 
     handleChangeBorderThickness = e => {
@@ -116,7 +122,15 @@ class EditScreenProperties extends Component {
     getControl = (control) => {
         const style = this.getStyle(control);
         return (
-            <div className="properties_control" style={style}>{control["value"] ? control["value"] : control["type"]}</div>
+            <div className="properties_control_container">
+                <ContentEditable
+                            id="properties_control_text"
+                            className="properties_control"
+                            style={style}
+                            html={control["value"]} 
+                            disabled={false}
+                            onChange={this.handleEditControlText}/>
+            </div>
         ); 
     }
 
@@ -126,11 +140,10 @@ class EditScreenProperties extends Component {
             case "button":
             case "textfield":
                 return(
-                    <div className="property_container">
-                        Font Size: 
-                        <div className="input-field inline">
-                            <i className="material-icons small prefix">text_fields</i>
-                            <input id="icon_prefix" type="number" value={control["font-size"]} onChange={this.handleChangeFontSize}></input>
+                    <div className="property_container row">
+                        <div className="input-field col s6">
+                            <input value={control["font-size"]} id="control_font_size" type="number" onChange={this.handleChangeFontSize} className="validate"></input>
+                            <label className="active" for="control_font_size">Font Size</label>
                         </div>
                     </div>
                 )
@@ -145,27 +158,27 @@ class EditScreenProperties extends Component {
             return (
                 <div>
                     <h5>Properties</h5>
-                    <div className="property_container properties_control_container">{this.getControl(control)}</div>
+                    <div className="property_container properties_control_container row">{this.getControl(control)}</div>
                     {this.getFontSize(control)}
-                    <div className="property_container">
+                    <div className="property_container row">
                         <div>Background: </div>
                         <div>
                             <div className="color_picker" onClick={this.toggleBackgroundColorPicker} style={this.getCurrentBackgroundColorStyle(control)}>{this.getCurrentBackgroundColorStyle(control)["backgroundColor"]}</div>
                             {this.getBackgroundColorPicker(control)}
                         </div>
                     </div>
-                    <div className="property_container">
+                    <div className="property_container row">
                         <div>Border Color: </div>
                         <div>
                             <div className="color_picker" onClick={this.toggleBorderColorPicker} style={this.getCurrentBorderColorStyle(control)}>{this.getCurrentBorderColorStyle(control)["backgroundColor"]}</div>
                             {this.getBorderColorPicker(control)}
                         </div>
                     </div>
-                    <div className="property_container">
+                    <div className="property_container row">
                         <div>Border Thickness: </div>
                         <input type="range" value={control["border-width"]} onChange={this.handleChangeBorderThickness} min="0" max="100" />
                     </div>
-                    <div className="property_container">
+                    <div className="property_container row">
                         <div>Border Radius: </div>
                         <input type="range" value={control["border-radius"]} onChange={this.handleChangeBorderRadius} min="0" max="10" />
                     </div>

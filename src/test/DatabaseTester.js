@@ -8,9 +8,11 @@ class DatabaseTester extends React.Component {
     //Super user account must always exist 
     handleClear = () => {
         const fireStore = getFirestore();
-        fireStore.collection('users').doc('JpYe7Jo7sVcd7heoHd6sFqoZkio1').update({
-            diagrams: [] //Clear diagrams in super user account
-        });
+        fireStore.collection('diagrams').where('owner', '==', 'JpYe7Jo7sVcd7heoHd6sFqoZkio1').get().then(snapshot => {
+            snapshot.forEach(doc => {
+                doc.ref.delete(); //Clear diagrams in super user account
+            });
+        }).catch(error => console.log('Failed to clear database', error));
     }
 
     handleReset = () => { //Reset super user account
@@ -20,11 +22,21 @@ class DatabaseTester extends React.Component {
             firstName: superuser.firstName,
             lastName: superuser.lastName,
             initials: superuser.initials,
-            diagrams: superuser.diagrams
+        }).then(() => {
+            superuser.diagrams.forEach((diagram) => {
+                fireStore.collection('diagrams').add({
+                    lastModified: fireStore.Timestamp.now().seconds,
+                    owner: 'JpYe7Jo7sVcd7heoHd6sFqoZkio1',
+                    name: diagram.name,
+                    height: diagram.height,
+                    width: diagram.width,
+                    controls: diagram.controls
+                })
+            })
         }).then(() => {
             console.log("DATABASE RESET");
-        }).catch((err) => {
-            console.log(err);
+        }).catch((error) => {
+            console.log('Failed to reset database', error);
         });
     }
 

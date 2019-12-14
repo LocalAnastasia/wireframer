@@ -18,6 +18,7 @@ body {
   width: 80%;
   left: 10%;
   top: 5%;
+  overflow: visible !important;
 }
 
 div.banner {
@@ -49,84 +50,27 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   color: #ec407a !important;
 }
 
-.list_inputs {
-  grid-template-rows: 50% 50%;
-}
-/* LIST SCREEN CLASSES */
-.list_item_add_card {
-  position: relative;
-  height: 50px;
-  grid-row-gap: 0px;
-  grid-column-gap: 50px;
-  margin-top: 0px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-align: center;
-}
-
-.list_item_card, .list_item_header_card {
-  position: relative;
-  height: 50px;
-  grid-row-gap: 0px;
-  grid-column-gap: 50px;
-  margin-top: 0px;
-  margin-bottom: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.list_item_card_description {
-  position: absolute;
-  left: 2%;
-}
-
-.list_item_task_header, .list_item_due_date_header, .list_item_status_header {
-  position: absolute;
-  top: 5%;
-}
-.list_item_card_assigned_to, .list_item_card_due_date, 
-.list_item_card_completed, .list_item_card_not_completed {
-  position: absolute;
-  top: 50%;
-}
-.list_item_task_header, .list_item_card_assigned_to {
-  left: 2%;
-}
-.list_item_due_date_header, .list_item_card_due_date {
-  left: 35%;
-}
-.list_item_status_header, .list_item_card_completed, .list_item_card_not_completed {
-  left: 60%;
-}
-
-.list_item_card_toolbar_button, .btn-floating {
-  margin-right: 20px;
-}
-
-.list_item_card_toolbar {
-  position: absolute;
-  left: 80%;
-  width: 15%;
-  top: 5%;
-  height: 90%;
+.diagram_card {
   display: grid;
-  grid-template-columns: 33% 33% 33%;
-  opacity: 0;
-  transition: all 0.5s var(--bounceEasing);
+  grid-template-columns: 80% 20%;
+  grid-column-gap: 10px;
 }
 
-.list_item_card:hover .list_item_card_toolbar {
-  opacity: 1;
-  transform: translateX(-20%);
-}
-
-#item_completed {
-  display: grid;
-  grid-template-columns: 12% 88%;
-}
-
-.item_buttons {
+.diagram_delete_button {
+  visibility: hidden;
   float: right;
+  margin-top: 50%;
+  transition: color 0.1s linear, transform 0.3s var(--bounceEasing);
+}
+
+.diagram_delete_button:hover {
+  color: grey;
+}
+
+.diagram_card:hover .diagram_delete_button {
+  visibility: visible;
+  cursor: pointer;
+  transform: translateX(-20%);
 }
 
 .edit_container {
@@ -188,18 +132,31 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
 .selection_bar_button > div {
     margin-top: 18px;
 }
+.edit_container_right {
+  background-color: white;
+  padding: 10px;
+}
+
+.edit_container_right .row {
+  margin: 5px;
+}
 
 .edit_properties_bar {
   display: block;
-  margin: 10px;
   height: 100%;
 }
 
 .properties_control {
+  border: solid;
+  overflow: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 50px;
+  transform: translate(25%, 50%);
+  text-align: center;
 }
 
 .properties_control_container {
@@ -226,18 +183,35 @@ input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   position: relative;
 }
 
+.diagram_control_text {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .diagram_control {
   position: absolute;
   cursor: pointer;
   text-align: center;
   vertical-align: middle;
+  border: solid;
 }
 
-.react-draggable > span > div {
+.resize_edge_tb {
+  height: 1px !important;
   background-color: grey;
-
 }
 
-.edit_container_right {
-  background-color: white;
+.resize_edge_lr {
+  width: 1px !important;
+  background-color: grey;
+}
+
+.resize_corner {
+  height: 10px !important;
+  width: 10px !important; 
+  background-color:grey;
 }

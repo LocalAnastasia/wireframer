@@ -9,9 +9,9 @@ class EditScreenControl extends Component {
 
     getStyle = (control) => {
         const style = {
-            fontSize: control["font-size"] ? control["font-size"] : 'auto',
+            fontSize: control["font-size"] ? control["font-size"] : 12,
             backgroundColor: control["background-color"] ? control["background-color"] : 'transparent',
-            borderColor: control["border-color"] ? control["border-color"] : 'transparent',
+            borderColor: control["border-color"] ? control["border-color"] : 'black',
             borderWidth: control["border-width"] ? control["border-width"] : 0,
             borderRadius: control["border-radius"] ? control["border-radius"] : 0
         }
@@ -88,9 +88,27 @@ class EditScreenControl extends Component {
         const size = this.getWH(control);
         const position = this.getXY(control);
         const style = this.getStyle(control);
+        const handleClasses = {
+            bottom: 'resize_edge_tb',
+            bottomLeft: 'resize_corner',
+            bottomRight: 'resize_corner',
+            left: 'resize_edge_lr',
+            right: 'resize_edge_lr',
+            top: 'resize_edge_tb',
+            topLeft: 'resize_corner',
+            topRight: 'resize_corner'
+        }
         return (
-            <Rnd className="diagram_control" size={size} style={style} position={position} enableResizing={this.getResizeableAxes()} bounds="parent" onResizeStop={this.handleResize} onDragStop={this.handleReposition}>
-                {control["value"]}
+            <Rnd className="diagram_control" 
+                size={size} 
+                style={style} 
+                position={position} 
+                resizeHandleClasses={handleClasses} 
+                enableResizing={this.getResizeableAxes()} 
+                bounds="parent" 
+                onResizeStop={this.handleResize} 
+                onDragStop={this.handleReposition}>
+                    <div className="diagram_control_text">{control["value"]}</div>
             </Rnd>
         )
     }

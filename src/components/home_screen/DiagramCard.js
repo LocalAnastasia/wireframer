@@ -3,11 +3,17 @@ import React from 'react';
 class DiagramCard extends React.Component {
 
     render() {
-        const { diagram } = this.props;
+        const diagramName = this.props.diagramName;
+        const diagramId = this.props.diagramId;
         return (
-            <div className="card z-depth-0 todo-list-link">
-                <div className="card-content grey-text text-darken-3">
-                    <span className="card-title">{diagram.name}</span>
+            <div className="card z-depth-0">
+                <div className="card-content grey-text text-darken-3 diagram_card">
+                    <div>
+                        <span className="card-title">{diagramName}</span>
+                    </div>
+                    <div onClick={this.props.handleShowDeleteModal.bind(this, diagramId)}>
+                        <i class="material-icons small diagram_delete_button">clear</i>
+                    </div>
                 </div>
             </div>
         );
