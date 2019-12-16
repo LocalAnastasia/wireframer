@@ -102,6 +102,7 @@ class EditScreenControl extends Component {
             topLeft: 'resize_corner',
             topRight: 'resize_corner'
         }
+        const gridScaler = 1 / this.props.zoomMultiplier;
         return (
             <Rnd className="diagram_control" 
                 size={size} 
@@ -110,6 +111,8 @@ class EditScreenControl extends Component {
                 resizeHandleClasses={handleClasses} 
                 enableResizing={this.getResizeableAxes()} 
                 bounds="parent" 
+                resizeGrid={[gridScaler, gridScaler]}
+                dragGrid={[gridScaler, gridScaler]}
                 onResizeStop={this.handleResize} 
                 onDragStop={this.handleReposition}
                 onClick={this.handlePreventBubbling}>

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { SketchPicker } from 'react-color';
-import ContentEditable from "react-contenteditable";
+import { SketchPicker, GithubPicker, TwitterPicker } from 'react-color';
 
 class EditScreenProperties extends Component {
+    constructor(props){
+        super(props);
+    }
 
     state = {
         showBackgroundColorPicker: false,
@@ -77,7 +79,14 @@ class EditScreenProperties extends Component {
         {   
             const control = this.props.control;
             return(
-                <SketchPicker color={this.getCurrentBackgroundColorStyle(control)["backgroundColor"]} onChange={this.handleChangeBackgroundColor}/>
+                <SketchPicker 
+                    className="color_picker"
+                    color={this.getCurrentBackgroundColorStyle(control)["backgroundColor"]} 
+                    onChange={this.handleChangeBackgroundColor}
+                    presetColors={['TRANSPARENT','#D0021B', '#F5A623', '#F8E71C', '#8B572A', 
+                                    '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', 
+                                    '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']}/>
+                    
             )
         }
 
@@ -109,7 +118,13 @@ class EditScreenProperties extends Component {
         {   
             const control = this.props.control;
             return(
-                <SketchPicker color={this.getCurrentBorderColorStyle(control)["borderColor"]} onChange={this.handleChangeBorderColor}/>
+                <SketchPicker 
+                    color={this.getCurrentBorderColorStyle(control)["borderColor"]}
+                    className="color_picker" 
+                    onChange={this.handleChangeBorderColor}
+                    presetColors={['TRANSPARENT','#D0021B', '#F5A623', '#F8E71C', '#8B572A', 
+                                    '#7ED321', '#417505', '#BD10E0', '#9013FE', '#4A90E2', 
+                                    '#50E3C2', '#B8E986', '#000000', '#4A4A4A', '#9B9B9B', '#FFFFFF']}/>
             )
         }
 
@@ -126,16 +141,14 @@ class EditScreenProperties extends Component {
     getControl = (control) => {
         const style = this.getStyle(control);
         return (
-            <div className="properties_control_container">
-                <ContentEditable
-                            id="properties_control_text"
-                            className="properties_control"
-                            style={style}
-                            html={control["value"]} 
-                            disabled={false}
-                            onChange={this.handleEditControlText}
-                            onKeyDown={this.handlePreventBubbling}/>
-            </div>
+            <input
+                        type="text"
+                        value={control["value"]}
+                        className="properties_control"
+                        style={style}
+                        onChange={this.handleEditControlText}
+                        onKeyDown={this.handlePreventBubbling}>
+            </input>
         ); 
     }
 

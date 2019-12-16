@@ -22,7 +22,8 @@ class EditScreen extends Component {
             controls: this.props.diagram.controls,
             newDiagramHeight: parseInt(this.props.diagram.height),
             newDiagramWidth: parseInt(this.props.diagram.width),
-            edited: false
+            edited: false,
+            zoomMultiplier: 1
         }
     }
 
@@ -105,6 +106,18 @@ class EditScreen extends Component {
             };
     }
 
+    handleZoomIn = e => {
+        this.setState({
+            zoomMultiplier: this.state.zoomMultiplier * 2
+        })
+    }
+
+    handleZoomOut = e => {
+        this.setState({
+            zoomMultiplier: this.state.zoomMultiplier * 0.5
+        })
+    }
+
     handlePreventBubbling = (e) => {
         e.nativeEvent.stopImmediatePropagation();
     }
@@ -112,7 +125,8 @@ class EditScreen extends Component {
     getDiagramStyle = () => {
         const style = {
             height: parseInt(this.state.diagram.height),
-            width: parseInt(this.state.diagram.width)
+            width: parseInt(this.state.diagram.width),
+            zoom: this.state.zoomMultiplier
         }
         return style
     }
@@ -317,12 +331,15 @@ class EditScreen extends Component {
         if (!this.props.auth.uid) {
             return <Redirect to="/login" />;
         }
+        if (!this.state.controls) {
+            return <Redirect to="/" />;
+        }
         return (
             <div className="dashboard container edit_container">
                 <div className="edit_container_left">
                     <div className="edit_toolbar">
-                        <div className="material-icons toolbar_button">zoom_in</div>
-                        <div className="material-icons toolbar_button">zoom_out</div>
+                        <div className="material-icons toolbar_button" onClick={this.handleZoomIn}>zoom_in</div>
+                        <div className="material-icons toolbar_button" onClick={this.handleZoomOut}>zoom_out</div>
                         <div className="toolbar_button" onClick={(e) => {this.handleSaveDiagram(e); this.handleShowSaveModal(e)}}>Save</div>
                         <div className="toolbar_button" onClick={this.handleCloseDiagram}>Close</div>
                     </div>
@@ -361,7 +378,8 @@ class EditScreen extends Component {
                                 focus={this.state.controlInFocus && control.key === this.state.controlInFocus.key ? true : false} 
                                 control={control} 
                                 handleChangeControl={this.handleChangeControl} 
-                                handleShiftFocus={this.handleShiftFocus}/>)}  
+                                handleShiftFocus={this.handleShiftFocus}
+                                zoomMultiplier={this.state.zoomMultiplier}/>)}  
                     </div>
                 </div>
                 <div className="edit_container_right">
