@@ -20,6 +20,10 @@ class EditScreenProperties extends Component {
         return style;
     }
 
+    handlePreventBubbling = (e) => {
+        e.nativeEvent.stopImmediatePropagation();
+    }
+
     handleEditControlText = (e) => {
         const control = this.props.control;
         this.props.handleChangeControl(control.key, "value", e.target.value, e);
@@ -129,7 +133,8 @@ class EditScreenProperties extends Component {
                             style={style}
                             html={control["value"]} 
                             disabled={false}
-                            onChange={this.handleEditControlText}/>
+                            onChange={this.handleEditControlText}
+                            onKeyDown={this.handlePreventBubbling}/>
             </div>
         ); 
     }
@@ -142,14 +147,19 @@ class EditScreenProperties extends Component {
                 return(
                     <div className="property_container row">
                         <div className="input-field col s6">
-                            <input value={control["font-size"]} id="control_font_size" type="number" onChange={this.handleChangeFontSize} className="validate"></input>
-                            <label className="active" for="control_font_size">Font Size</label>
+                            <input value={control["font-size"]} id="control_font_size" type="number" onChange={this.handleChangeFontSize} onKeyDown={this.handlePreventBubbling} className="validate"></input>
+                            <label className="active" htmlFor="control_font_size">Font Size</label>
                         </div>
                     </div>
                 )
             default:
                 return null;
         }
+    }
+
+    getMaxBorderWidth = () => {
+        const control = this.props.control;
+        return Math.round(0.125 * Math.min(control.height, control.width));
     }
 
     render() {
@@ -176,7 +186,7 @@ class EditScreenProperties extends Component {
                     </div>
                     <div className="property_container row">
                         <div>Border Thickness: </div>
-                        <input type="range" value={control["border-width"]} onChange={this.handleChangeBorderThickness} min="0" max="100" />
+                        <input type="range" value={control["border-width"]} onChange={this.handleChangeBorderThickness} min={0} max={this.getMaxBorderWidth()} />
                     </div>
                     <div className="property_container row">
                         <div>Border Radius: </div>

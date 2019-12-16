@@ -20,6 +20,8 @@ class EditScreen extends Component {
             controlInFocus: null,
             diagram: this.props.diagram,
             controls: this.props.diagram.controls,
+            newDiagramHeight: parseInt(this.props.diagram.height),
+            newDiagramWidth: parseInt(this.props.diagram.width),
             edited: false
         }
     }
@@ -45,7 +47,7 @@ class EditScreen extends Component {
         if (this.ctrl && this.d) { //DUPLICATE 
             this.handleDuplicateControl();
         }
-        else if (this.del && !this.controlTextHasFocus()) { //DELETE
+        else if (this.del) { //DELETE
             this.handleDeleteControl();
         }
     }
@@ -78,9 +80,41 @@ class EditScreen extends Component {
         document.removeEventListener("keyup", this.keyupFunction, false);
     }
 
-    controlTextHasFocus = () => { //TODO: Pressing delete while textbox has focus will delete control in focus
-        let text = document.getElementById('properties_control_text');
-        return (document.activeElement === text);
+    getDiagramDimensionsUpdateStyle = () => {
+        var height = this.state.newDiagramHeight;
+        var width = this.state.newDiagramWidth;
+        var newDimensions = this.state.newDiagramDimensions;
+        var heightValid = false;
+        var widthValid = false;
+        if (height >= 1 && height <= 5000) {
+            heightValid = true;
+        }
+        if (width >= 1 && width <= 5000) {
+            widthValid = true;
+        }
+        if (newDimensions && heightValid && widthValid) {
+            return {
+                visibility: 'visible',
+                pointerEvents: 'auto'
+            };
+        }
+
+        return {
+            visibility: 'hidden',
+            pointerEvents: 'none'
+            };
+    }
+
+    handlePreventBubbling = (e) => {
+        e.nativeEvent.stopImmediatePropagation();
+    }
+
+    getDiagramStyle = () => {
+        const style = {
+            height: parseInt(this.state.diagram.height),
+            width: parseInt(this.state.diagram.width)
+        }
+        return style
     }
 
     updateIndices = (controls) => {
@@ -117,7 +151,7 @@ class EditScreen extends Component {
         this.setState({controlInFocus: this.state.controls[key]});
     }
 
-    handleDefocus = (e) => {
+    handleDefocus = (e) => { 
         if (e) {
             e.stopPropagation();
             e.preventDefault();
@@ -160,6 +194,70 @@ class EditScreen extends Component {
             controlInFocus: controls[control.key],
             edited: true
         });  
+    }
+
+    handleChangeDiagram = (property, value, e) => {
+        var diagram = JSON.parse(JSON.stringify(this.state.diagram));
+        diagram[property] = value;
+        this.setState({
+            diagram: diagram,
+            edited: true});
+    }
+
+    handleDiagramWidthChanges = (e) => {
+        var val = parseInt(e.target.value);
+        this.setState({
+            newDiagramWidth: val,
+            newDiagramDimensions: this.state.newDiagramDimensions? true : val !== this.state.diagram.width
+        })
+    }
+
+    handleDiagramHeightChanges = (e) => {
+        var val = parseInt(e.target.value);
+        this.setState({
+            newDiagramHeight: val,
+            newDiagramDimensions: this.state.newDiagramDimensions? true : val !== this.state.diagram.height
+        })
+    }
+
+    handleUpdateDiagramWidthHeight = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        var controls = JSON.parse(JSON.stringify(this.state.controls));
+        var diagram = JSON.parse(JSON.stringify(this.state.diagram));
+        //X-axis (width) ratio
+        var newX = parseInt(this.state.newDiagramWidth);
+        var oldX = this.state.diagram["width"];
+        var ratioX = newX / oldX;
+        //Y-axis (height) ratio
+        var newY = parseInt(this.state.newDiagramHeight);
+        var oldY = this.state.diagram["height"];
+        var ratioY = newY / oldY;
+        controls.forEach((ele, ind, arr) => {
+            if(arr[ind].height > newY) { //Clip height
+                arr[ind].height = newY;
+            }
+            if(arr[ind].width > newX) { //Clip width
+                arr[ind].width = newX;
+            }
+            arr[ind].left *= ratioX
+            arr[ind].top *= ratioY
+        })
+        diagram["width"] = newX;
+        diagram["height"] = newY;
+        this.setState({
+            diagram: diagram,
+            controls: controls,
+            newDiagramDimensions: false,
+            edited: true
+        });
+    }
+
+    handleChangeDiagramName = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        const val = e.target.value;
+        this.handleChangeDiagram('name', val, e);
     }
 
     handleShowCloseModal = (e) => {
@@ -215,6 +313,7 @@ class EditScreen extends Component {
 
     render() {
         const controls = this.state.controls;
+        const diagramStyle = this.getDiagramStyle();
         if (!this.props.auth.uid) {
             return <Redirect to="/login" />;
         }
@@ -254,9 +353,16 @@ class EditScreen extends Component {
                         </a>
                     </div>
                 </div>
-                <div className="edit_container_center">
-                    {controls && controls.map((control) => 
-                        <EditScreenControl focus={this.state.controlInFocus && control.key === this.state.controlInFocus.key ? true : false} control={control} handleChangeControl={this.handleChangeControl} handleShiftFocus={this.handleShiftFocus}/>)}
+                <div className="edit_container_center" onClick={this.handleDefocus}>
+                    <span></span>
+                    <div className="edit_controls_container" style={diagramStyle}>
+                        {controls && controls.map((control) => 
+                            <EditScreenControl 
+                                focus={this.state.controlInFocus && control.key === this.state.controlInFocus.key ? true : false} 
+                                control={control} 
+                                handleChangeControl={this.handleChangeControl} 
+                                handleShiftFocus={this.handleShiftFocus}/>)}  
+                    </div>
                 </div>
                 <div className="edit_container_right">
                     <div className="row">
@@ -264,19 +370,22 @@ class EditScreen extends Component {
                     </div>
                     <div className="edit_diagram_name row">
                         <div className="input-field">
-                            <input value={this.state.diagram.name} id="diagram_name" type="text" className="validate"></input>
-                            <label className="active" for="diagram_name">Name</label>
+                            <input value={this.state.diagram.name} id="diagram_name" type="text" className="validate" onChange={this.handleChangeDiagramName} onKeyDown={this.handlePreventBubbling}></input>
+                            <label className="active" htmlFor="diagram_name">Name</label>
                         </div>
                     </div>
                     <div className="edit_diagram_dimensions row">
-                        <div className="input-field col s6">
-                            <input value={this.state.diagram.height} id="diagram_height" type="text" className="validate"></input>
-                            <label className="active" for="diagram_height">H</label>
+                        <div className="input-field">
+                            <input value={this.state.newDiagramHeight} id="diagram_height" type="number" className="validate" min="1" max="5000" onChange={this.handleDiagramHeightChanges} onKeyDown={this.handlePreventBubbling}></input>
+                            <label className="active" htmlFor="diagram_height">H</label>
+                            <span className="helper-text" data-error="Must be between 1 and 5000"></span>
                         </div>
-                        <div className="input-field col s6">
-                            <input value={this.state.diagram.width} id="diagram_width" type="text" className="validate"></input>
-                            <label className="active" for="diagram_width">W</label>
+                        <div className="input-field">
+                            <input value={this.state.newDiagramWidth} id="diagram_width" type="number" className="validate" min="1" max="5000" onChange={this.handleDiagramWidthChanges} onKeyDown={this.handlePreventBubbling}></input>
+                            <label className="active" htmlFor="diagram_width">W</label>
+                            <span className="helper-text" data-error="Must be between 1 and 5000"></span>
                         </div>
+                        <div className="btn-mini" style={this.getDiagramDimensionsUpdateStyle()} onClick={this.handleUpdateDiagramWidthHeight}>*Update</div>
                     </div>
                     <div className="edit_properties_bar">
                         <EditScreenProperties control={this.state.controlInFocus} handleChangeControl={this.handleChangeControl}/>
@@ -288,7 +397,7 @@ class EditScreen extends Component {
                         <h6>Diagram successfully saved to database.</h6>
                     </div>
                     <div className="modal-footer">
-                        <div className="btn-flat list_modal_button" onClick={this.handleHideSaveModal}>Close</div>
+                        <div className="btn-flat diagram_modal_button" onClick={this.handleHideSaveModal}>Close</div>
                     </div>
                 </div>
                 <div id="diagram_close_modal" className="modal">
@@ -297,9 +406,9 @@ class EditScreen extends Component {
                         <h6>You have unsaved changes. Do you want to save the changes?</h6>
                     </div>
                     <div className="modal-footer">
-                        <Link to="/" className="btn-flat list_modal_button" onClick={this.handleSaveDiagram}>Save and exit</Link>
-                        <Link to="/" className="btn-flat list_modal_button" onClick={this.handleHideCloseModal}>No</Link>
-                        <div className="btn-flat list_modal_button" onClick={this.handleHideCloseModal}>Cancel</div>
+                        <Link to="/" className="btn-flat diagram_modal_button" onClick={this.handleSaveDiagram}>Save and exit</Link>
+                        <Link to="/" className="btn-flat diagram_modal_button" onClick={this.handleHideCloseModal}>No</Link>
+                        <div className="btn-flat diagram_modal_button" onClick={this.handleHideCloseModal}>Cancel</div>
                     </div>
                 </div>
             </div>

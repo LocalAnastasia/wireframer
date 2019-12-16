@@ -14,12 +14,12 @@ import DatabaseTester from './test/DatabaseTester';
 class App extends React.Component{
   render(){
     const {auth} = this.props;
-    if (auth.isLoaded){
+    if (auth.isLoaded){ //TODO: Prevent user from directly accessing Edit page
       return(
         <BrowserRouter>
           <div className='App'>
             <Navbar />
-            <Switch>
+            <Switch> 
               <Route exact path="/" component={HomeScreen} />
               <Route path="/login" component={LoginScreen} />
               <Route path="/register" component={RegisterScreen} />

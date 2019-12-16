@@ -88,12 +88,12 @@ div.banner {
   vertical-align: middle;
 }
 
-.list_modal_button {
+.diagram_modal_button {
   background-color: darkslategray;
   color: white;
 }
 
-.list_modal_button:hover {
+.diagram_modal_button:hover {
   background-color: transparent;
   color: black;
   transition: background-color 0.2s;

@@ -12,7 +12,7 @@ class DiagramCard extends React.Component {
                         <span className="card-title">{diagramName}</span>
                     </div>
                     <div onClick={this.props.handleShowDeleteModal.bind(this, diagramId)}>
-                        <i class="material-icons small diagram_delete_button">clear</i>
+                        <i className="material-icons small diagram_delete_button">clear</i>
                     </div>
                 </div>
             </div>

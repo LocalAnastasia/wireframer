@@ -7,13 +7,15 @@ class EditScreenControl extends Component {
         key: this.props.control.key,
     }
 
-    getStyle = (control) => {
+    getStyle = () => {
+        const control = this.props.control;
         const style = {
-            fontSize: control["font-size"] ? control["font-size"] : 12,
+            fontSize: control["font-size"] ? parseInt(control["font-size"]) : 12,
             backgroundColor: control["background-color"] ? control["background-color"] : 'transparent',
             borderColor: control["border-color"] ? control["border-color"] : 'black',
-            borderWidth: control["border-width"] ? control["border-width"] : 0,
-            borderRadius: control["border-radius"] ? control["border-radius"] : 0
+            borderWidth: control["border-width"] ? parseInt(control["border-width"]) : 0,
+            borderRadius: control["border-radius"] ? parseInt(control["border-radius"]) : 0
+
         }
         return style;
     }
@@ -47,25 +49,25 @@ class EditScreenControl extends Component {
         return enable;
     }
 
-    getXY = (control) => {
+    getXY = () => {
+        const control = this.props.control;
         const XY = {
-            x: control["left"],
-            y: control["top"]
+            x: parseInt(control["left"]),
+            y: parseInt(control["top"])
         }
         return XY;
     }
 
-    getWH = (control) => {
+    getWH = () => {
+        const control = this.props.control;
         const WH = {
-            width: control["width"] ? control["width"] : 'auto',
-            height: control["height"] ? control["height"] : 'auto'
+            width: control["width"] ? parseInt(control["width"]) : 'auto',
+            height: control["height"] ? parseInt(control["height"]) : 'auto'
         }
         return WH;
     }
 
     handleReposition =  (e, direction) => {
-        e.preventDefault();
-        e.stopPropagation();
         const {x, y} = direction;
         this.props.handleShiftFocus(this.state.key, e);
         this.props.handleChangeControl(this.state.key, "left", x, e);
@@ -73,8 +75,6 @@ class EditScreenControl extends Component {
       };
 
     handleResize = (e, direction, ref, delta, position) => {
-        e.stopPropagation();
-        e.preventDefault();
         const {x, y} = position;
         this.props.handleShiftFocus(this.state.key, e);
         this.props.handleChangeControl(this.state.key, "width", ref.style.width, e);
@@ -83,11 +83,15 @@ class EditScreenControl extends Component {
         this.props.handleChangeControl(this.state.key, "top", y, e);
     }
 
+    handlePreventBubbling = (e) => {
+        e.stopPropagation();
+    }
+
     render() {
         const control = this.props.control;
-        const size = this.getWH(control);
-        const position = this.getXY(control);
-        const style = this.getStyle(control);
+        const size = this.getWH();
+        const position = this.getXY();
+        const style = this.getStyle();
         const handleClasses = {
             bottom: 'resize_edge_tb',
             bottomLeft: 'resize_corner',
@@ -107,7 +111,8 @@ class EditScreenControl extends Component {
                 enableResizing={this.getResizeableAxes()} 
                 bounds="parent" 
                 onResizeStop={this.handleResize} 
-                onDragStop={this.handleReposition}>
+                onDragStop={this.handleReposition}
+                onClick={this.handlePreventBubbling}>
                     <div className="diagram_control_text">{control["value"]}</div>
             </Rnd>
         )

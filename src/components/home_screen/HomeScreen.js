@@ -90,8 +90,8 @@ class HomeScreen extends Component {
                         <p id="diagram_delete_modal_disclaimer">Note: This action can not be undone.</p>
                     </div>
                     <div className="modal-footer">
-                        <div className="btn-flat list_modal_button" onClick={(e) => {this.handleDeleteDiagram(e); this.handleHideDeleteModal(e)}}>Delete</div>
-                        <div className="btn-flat list_modal_button" onClick={this.handleHideDeleteModal}>Cancel</div>
+                        <div className="btn-flat diagram_modal_button" onClick={(e) => {this.handleDeleteDiagram(e); this.handleHideDeleteModal(e)}}>Delete</div>
+                        <div className="btn-flat diagram_modal_button" onClick={this.handleHideDeleteModal}>Cancel</div>
                     </div>
                 </div>
             </div>
