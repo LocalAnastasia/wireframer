@@ -16,6 +16,9 @@ class EditScreen extends Component {
         this.ctrl = false;
         this.d = false;
         this.del = false;
+        if (!this.props.diagram){
+            return;
+        }
         this.state = {
             controlInFocus: null,
             diagram: this.props.diagram,
@@ -326,14 +329,14 @@ class EditScreen extends Component {
     }
 
     render() {
-        const controls = this.state.controls;
-        const diagramStyle = this.getDiagramStyle();
+        if (!this.props.diagram) {
+            return <Redirect to="/" />;
+        }
         if (!this.props.auth.uid) {
             return <Redirect to="/login" />;
         }
-        if (!this.state.controls) {
-            return <Redirect to="/" />;
-        }
+        const controls = this.state.controls;
+        const diagramStyle = this.getDiagramStyle();
         return (
             <div className="dashboard container edit_container">
                 <div className="edit_container_left">
